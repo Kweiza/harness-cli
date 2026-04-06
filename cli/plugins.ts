@@ -24,6 +24,13 @@ interface ClaudeSettings {
   [key: string]: unknown;
 }
 
+export function hasKweizaPlugins(): boolean {
+  if (!existsSync(CLAUDE_SETTINGS_PATH)) return false;
+  const settings: ClaudeSettings = JSON.parse(readFileSync(CLAUDE_SETTINGS_PATH, "utf-8"));
+  const plugins = settings.enabledPlugins ?? {};
+  return Object.keys(KWEIZA_PLUGINS).every((name) => name in plugins);
+}
+
 export function installKweizaPlugins(): { installed: string[]; alreadyInstalled: string[] } {
   const installed: string[] = [];
   const alreadyInstalled: string[] = [];

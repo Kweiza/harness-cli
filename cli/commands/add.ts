@@ -1,11 +1,12 @@
 import { resolve } from "node:path";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { confirm } from "@inquirer/prompts";
 import chalk from "chalk";
 import fse from "fs-extra";
 import { loadPreset } from "../presets.js";
 import { mergeClaudeMd, mergeSettings, mergeRules } from "../merge.js";
 import { readVersionInfo, createVersionInfo } from "../version.js";
-import { installKweizaPlugins } from "../plugins.js";
+import { installKweizaPlugins, hasKweizaPlugins } from "../plugins.js";
 
 export async function addCommand(presetName: string): Promise<void> {
   const targetDir = resolve(".");
@@ -73,10 +74,18 @@ export async function addCommand(presetName: string): Promise<void> {
     }
   }
 
-  // Ensure Kweiza plugins are configured
-  const { installed } = installKweizaPlugins();
-  if (installed.length > 0) {
-    console.log(chalk.green(`✔ Kweiza plugins configured: ${installed.join(", ")}`));
+  // Offer Kweiza plugins if not already installed
+  if (!hasKweizaPlugins()) {
+    const installPlugins = await confirm({
+      message: "Install Kweiza plugins? (recommended — grafik-bar status line)",
+      default: true,
+    });
+    if (installPlugins) {
+      const { installed } = installKweizaPlugins();
+      if (installed.length > 0) {
+        console.log(chalk.green(`✔ Kweiza plugins configured: ${installed.join(", ")}`));
+      }
+    }
   }
 
   // Update version tracking
