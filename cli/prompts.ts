@@ -1,5 +1,6 @@
 import { input, checkbox, confirm } from "@inquirer/prompts";
 import { getPresetList } from "./presets.js";
+import { hasKweizaPlugins } from "./plugins.js";
 
 export interface InitAnswers {
   projectName: string;
@@ -33,10 +34,12 @@ export async function promptInit(): Promise<InitAnswers> {
     default: true,
   });
 
-  const installPlugins = await confirm({
-    message: "Install Kweiza plugins? (recommended — grafik-bar status line)",
-    default: true,
-  });
+  const installPlugins = hasKweizaPlugins()
+    ? false
+    : await confirm({
+        message: "Install Kweiza plugins? (recommended — grafik-bar status line)",
+        default: true,
+      });
 
   return { projectName, presets, gitInit, installPlugins };
 }
