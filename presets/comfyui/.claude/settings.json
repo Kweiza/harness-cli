@@ -1,0 +1,8 @@
+{
+  "hooks": {
+    "PreCommit": [
+      { "command": "uv run ruff check --fix ." },
+      { "command": "uv run ruff format --check ." }
+    ]
+  }
+}

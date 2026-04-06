@@ -1,0 +1,8 @@
+{
+  "hooks": {
+    "PreCommit": [
+      { "command": "npx eslint --fix frontend/" },
+      { "command": "uv run ruff check --fix backend/" }
+    ]
+  }
+}
