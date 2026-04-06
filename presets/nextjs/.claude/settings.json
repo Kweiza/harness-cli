@@ -1,8 +1,9 @@
 {
   "hooks": {
     "PreCommit": [
+      { "command": "npx tsc --noEmit" },
       { "command": "npx eslint --fix ." },
-      { "command": "npx prettier --check ." }
+      { "command": "npx prettier --write --check ." }
     ]
   }
 }

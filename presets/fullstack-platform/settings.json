@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreCommit": [
+      { "command": "cd frontend && npx tsc --noEmit" },
+      { "command": "cd frontend && npx eslint --fix ." },
+      { "command": "cd backend && uv run ruff check --fix ." },
+      { "command": "cd backend && uv run ruff format --check ." }
+    ]
+  }
+}

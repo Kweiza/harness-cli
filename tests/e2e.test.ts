@@ -83,9 +83,11 @@ describe("e2e: generate full project", () => {
     expect(existsSync(join(targetDir, ".claude", "settings.json"))).toBe(true);
 
     const rules = readdirSync(join(targetDir, ".claude", "rules"));
-    // base (5) + 9 presets (1 each) = 14, under 20 limit
+    // base (5) + 9 presets (1 each) = 14, under 20 rule file limit
     expect(rules.length).toBe(14);
-    expect(result.warnings.some((w) => w.includes("20"))).toBe(false);
+    expect(result.warnings.some((w) => w.includes("rule files exceed"))).toBe(false);
+    // CLAUDE.md will exceed 200 lines when all 9 presets combined — that's expected
+    expect(result.warnings.some((w) => w.includes("CLAUDE.md"))).toBe(true);
   });
 
   it("base-only project (no presets) works", () => {

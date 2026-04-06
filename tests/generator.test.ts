@@ -32,7 +32,7 @@ describe("generate", () => {
       readFileSync(join(targetDir, ".claude", "settings.json"), "utf-8")
     );
     expect(settings.hooks.PreCommit.length).toBeGreaterThan(0);
-    expect(settings.hooks.PreCommit[0].command).toContain("eslint");
+    expect(settings.hooks.PreCommit.some((h: { command: string }) => h.command.includes("eslint"))).toBe(true);
   });
 
   it("copies base and preset rules", () => {

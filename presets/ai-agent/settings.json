@@ -1,0 +1,9 @@
+{
+  "hooks": {
+    "PreCommit": [
+      { "command": "uv run ruff check --fix ." },
+      { "command": "uv run ruff format --check ." },
+      { "command": "uv run python -m mypy agent/ --ignore-missing-imports" }
+    ]
+  }
+}
