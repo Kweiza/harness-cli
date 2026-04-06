@@ -5,6 +5,7 @@ export interface InitAnswers {
   projectName: string;
   presets: string[];
   gitInit: boolean;
+  installPlugins: boolean;
 }
 
 export async function promptInit(): Promise<InitAnswers> {
@@ -32,5 +33,10 @@ export async function promptInit(): Promise<InitAnswers> {
     default: true,
   });
 
-  return { projectName, presets, gitInit };
+  const installPlugins = await confirm({
+    message: "Install Kweiza plugins? (recommended — grafik-bar status line)",
+    default: true,
+  });
+
+  return { projectName, presets, gitInit, installPlugins };
 }

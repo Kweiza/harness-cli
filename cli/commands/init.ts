@@ -5,6 +5,7 @@ import fse from "fs-extra";
 import { promptInit } from "../prompts.js";
 import { generate } from "../generator.js";
 import { readVersionInfo } from "../version.js";
+import { installKweizaPlugins } from "../plugins.js";
 
 export async function initCommand(targetPath?: string): Promise<void> {
   const answers = await promptInit();
@@ -39,6 +40,17 @@ export async function initCommand(targetPath?: string): Promise<void> {
   // Warnings
   for (const warning of result.warnings) {
     console.log(chalk.yellow(warning));
+  }
+
+  // Install Kweiza plugins
+  if (answers.installPlugins) {
+    const { installed, alreadyInstalled } = installKweizaPlugins();
+    if (installed.length > 0) {
+      console.log(chalk.green(`✔ Kweiza plugins configured: ${installed.join(", ")}`));
+    }
+    if (alreadyInstalled.length > 0) {
+      console.log(chalk.dim(`  (already installed: ${alreadyInstalled.join(", ")})`));
+    }
   }
 
   // Git init

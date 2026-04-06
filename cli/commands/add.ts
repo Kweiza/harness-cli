@@ -5,6 +5,7 @@ import fse from "fs-extra";
 import { loadPreset } from "../presets.js";
 import { mergeClaudeMd, mergeSettings, mergeRules } from "../merge.js";
 import { readVersionInfo, createVersionInfo } from "../version.js";
+import { installKweizaPlugins } from "../plugins.js";
 
 export async function addCommand(presetName: string): Promise<void> {
   const targetDir = resolve(".");
@@ -70,6 +71,12 @@ export async function addCommand(presetName: string): Promise<void> {
         console.log(chalk.green(`✔ ${file} created`));
       }
     }
+  }
+
+  // Ensure Kweiza plugins are configured
+  const { installed } = installKweizaPlugins();
+  if (installed.length > 0) {
+    console.log(chalk.green(`✔ Kweiza plugins configured: ${installed.join(", ")}`));
   }
 
   // Update version tracking
