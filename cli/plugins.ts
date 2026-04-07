@@ -15,6 +15,7 @@ const KWEIZA_MARKETPLACE = {
 const KWEIZA_PLUGINS: Record<string, boolean> = {
   "grafik-bar@kweiza-skills": true,
   "harness@kweiza-skills": true,
+  "session-handoff@kweiza-skills": true,
 };
 
 const MARKETPLACE_KEY = "kweiza-skills";
