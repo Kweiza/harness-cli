@@ -4,7 +4,7 @@
   "description": "Kweiza Harness — Claude Code project setup CLI",
   "type": "module",
   "bin": {
-    "harness": "./dist/cli/index.js"
+    "harness": "dist/cli/index.js"
   },
   "scripts": {
     "build": "tsc",
