@@ -3,38 +3,14 @@
   "version": "1.0.0",
   "description": "Kweiza Harness — Claude Code project setup CLI",
   "type": "module",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kweiza/harness-cli.git"
-  },
-  "homepage": "https://github.com/kweiza/harness-cli#readme",
-  "bugs": {
-    "url": "https://github.com/kweiza/harness-cli/issues"
-  },
-  "keywords": [
-    "claude-code",
-    "harness",
-    "cli",
-    "project-setup",
-    "anthropic",
-    "ai-tooling"
-  ],
-  "author": "Kweiza",
   "bin": {
     "harness": "./dist/cli/index.js"
   },
-  "files": [
-    "dist/",
-    "base/",
-    "presets/"
-  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx cli/index.ts",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "prepublishOnly": "npm run build && npm test"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "commander": "^13.0.0",
@@ -48,8 +24,5 @@
     "tsx": "^4.0.0",
     "typescript": "^5.0.0",
     "vitest": "^3.0.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
   }
 }

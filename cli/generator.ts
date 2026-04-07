@@ -23,7 +23,8 @@ export function generate(options: GenerateOptions): GenerateResult {
   const presetData = presets.map((name) => loadPreset(name));
 
   // 1. Merge CLAUDE.md
-  const baseMdPath = join(baseDir, "CLAUDE.md");
+  const existingMdPath = join(targetDir, "CLAUDE.md");
+  const baseMdPath = existsSync(existingMdPath) ? existingMdPath : join(baseDir, "CLAUDE.md");
   const presetMdPaths = presetData
     .map((p) => p.claudeMd)
     .filter((p) => existsSync(p));

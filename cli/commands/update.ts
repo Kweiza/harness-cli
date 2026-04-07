@@ -7,7 +7,7 @@ import { getBaseDir, loadPreset } from "../presets.js";
 import { mergeClaudeMd, mergeSettings, mergeRules } from "../merge.js";
 import { readVersionInfo, createVersionInfo } from "../version.js";
 
-export async function updateCommand(): Promise<void> {
+export async function updateCommand(opts: { yes?: boolean } = {}): Promise<void> {
   const targetDir = resolve(".");
 
   const versionInfo = readVersionInfo(targetDir);
@@ -25,14 +25,16 @@ export async function updateCommand(): Promise<void> {
   );
   console.log(chalk.blue(`Last updated: ${versionInfo.lastUpdated}`));
 
-  const proceed = await confirm({
-    message: "Regenerate CLAUDE.md, settings.json, and rules from latest harness?",
-    default: true,
-  });
+  if (!opts.yes) {
+    const proceed = await confirm({
+      message: "Regenerate CLAUDE.md, settings.json, and rules from latest harness?",
+      default: true,
+    });
 
-  if (!proceed) {
-    console.log("Cancelled.");
-    return;
+    if (!proceed) {
+      console.log("Cancelled.");
+      return;
+    }
   }
 
   const baseDir = getBaseDir();

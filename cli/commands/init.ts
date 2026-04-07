@@ -2,13 +2,13 @@ import { resolve } from "node:path";
 import { execSync } from "node:child_process";
 import chalk from "chalk";
 import fse from "fs-extra";
-import { promptInit } from "../prompts.js";
+import { promptInit, type InitOptions } from "../prompts.js";
 import { generate } from "../generator.js";
 import { readVersionInfo } from "../version.js";
 import { installKweizaPlugins } from "../plugins.js";
 
-export async function initCommand(targetPath?: string): Promise<void> {
-  const answers = await promptInit();
+export async function initCommand(targetPath?: string, opts: InitOptions = {}): Promise<void> {
+  const answers = await promptInit(opts);
   const targetDir = resolve(targetPath ?? answers.projectName);
 
   // Check if already initialized

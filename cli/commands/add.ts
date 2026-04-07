@@ -8,7 +8,7 @@ import { mergeClaudeMd, mergeSettings, mergeRules } from "../merge.js";
 import { readVersionInfo, createVersionInfo } from "../version.js";
 import { installKweizaPlugins, hasKweizaPlugins } from "../plugins.js";
 
-export async function addCommand(presetName: string): Promise<void> {
+export async function addCommand(presetName: string, opts: { yes?: boolean } = {}): Promise<void> {
   const targetDir = resolve(".");
 
   // Validate preset
@@ -76,10 +76,12 @@ export async function addCommand(presetName: string): Promise<void> {
 
   // Offer Kweiza plugins if not already installed
   if (!hasKweizaPlugins()) {
-    const installPlugins = await confirm({
-      message: "Install Kweiza plugins? (recommended — grafik-bar status line)",
-      default: true,
-    });
+    const installPlugins = opts.yes
+      ? true
+      : await confirm({
+          message: "Install Kweiza plugins? (recommended — grafik-bar status line)",
+          default: true,
+        });
     if (installPlugins) {
       const { installed } = installKweizaPlugins();
       if (installed.length > 0) {

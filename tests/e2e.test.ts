@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { mkdtempSync, existsSync, readFileSync, readdirSync } from "node:fs";
+import { mkdtempSync, existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import fse from "fs-extra";
@@ -100,5 +100,35 @@ describe("e2e: generate full project", () => {
     expect(rules.length).toBe(5);
 
     expect(result.warnings).toEqual([]);
+  });
+
+  it("preserves existing CLAUDE.md instead of overwriting with base template", () => {
+    // Simulate a project that already has a CLAUDE.md
+    const existingContent = "# My Existing Project\n\nCustom build instructions here.\n";
+    writeFileSync(join(targetDir, "CLAUDE.md"), existingContent);
+
+    const result = generate({ targetDir, presets: ["nextjs"] });
+
+    const claudeMd = readFileSync(join(targetDir, "CLAUDE.md"), "utf-8");
+    // Should contain the original content
+    expect(claudeMd).toContain("# My Existing Project");
+    expect(claudeMd).toContain("Custom build instructions here.");
+    // Should also contain the preset section
+    expect(claudeMd).toContain("Next.js");
+    // Should NOT contain the base template placeholder
+    expect(claudeMd).not.toContain("<!-- Populated by presets -->");
+
+    expect(result.warnings).toEqual([]);
+  });
+
+  it("preserves existing CLAUDE.md with no presets selected", () => {
+    const existingContent = "# My Project\n\nImportant notes.\n";
+    writeFileSync(join(targetDir, "CLAUDE.md"), existingContent);
+
+    generate({ targetDir, presets: [] });
+
+    const claudeMd = readFileSync(join(targetDir, "CLAUDE.md"), "utf-8");
+    expect(claudeMd).toContain("# My Project");
+    expect(claudeMd).toContain("Important notes.");
   });
 });
