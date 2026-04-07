@@ -1,6 +1,6 @@
 {
   "name": "@kweiza/harness",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Kweiza Harness — Claude Code project setup CLI",
   "type": "module",
   "bin": {
